@@ -4,6 +4,7 @@ void get_column (char *line, char* column, int cNum) {
   int one, two, tabs, i;
   tabs = 0;
   one = -1;
+  two = -1;
   for (i = 0; line[i]; i++) {
     if (tabs == cNum && one == -1){
       one = i;
@@ -16,6 +17,9 @@ void get_column (char *line, char* column, int cNum) {
       tabs++;
     }
   }
-  strncpy (column, &(line[one]), two-one);
-  column[two-one] = '\0';
+  if (two == -1) {
+    two = strlen(line) - 1;
+  }
+  strncpy (column, &(line[one]), two-one-1);
+  column[two-one-1] = '\0';
 }
