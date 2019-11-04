@@ -13,3 +13,5 @@ struct title_basics_array {
 struct title_basics_array* get_title(char * path);
 void build_ptindex( struct title_basics_array* titles );
 struct title_basics * find_primary_title (struct title_basics_array* titles, char *key);
+void build_tindex( struct title_basics_array* titles );
+struct title_basics * find_tconst (struct title_basics_array* titles, char *key);

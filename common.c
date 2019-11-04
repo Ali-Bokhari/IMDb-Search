@@ -23,3 +23,20 @@ void get_column (char *line, char* column, int cNum) {
   strncpy (column, &(line[one]), two-one-1);
   column[two-one-1] = '\0';
 }
+
+char *reverse(char *str) {
+  char p;
+  int i, j;
+    if (!str || ! *str)
+        return str;
+    i = strlen(str) - 1;
+    j = 0;
+    while (i > j) {
+        p = str[i];
+        str[i] = str[j];
+        str[j] = p;
+        j++;
+        i--;
+    }
+    return str;
+}

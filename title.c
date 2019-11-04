@@ -43,7 +43,7 @@ struct title_basics_array* get_title(char * path) {
       get_column(line, tcon, 0);
       get_column(line, title, 2);
       titles->titles[i].tconst = malloc(strlen(tcon) + 1);
-      strcpy(titles->titles[i].tconst, tcon);
+      strcpy(titles->titles[i].tconst, reverse(tcon));
       titles->titles[i].primaryTitle = malloc(strlen(title) + 1);
       strcpy(titles->titles[i].primaryTitle, title);
       i++;
@@ -68,6 +68,24 @@ void build_ptindex( struct title_basics_array* titles ) {
 
 struct title_basics * find_primary_title (struct title_basics_array* titles, char *key) {
   struct node* tree = find_node(titles->primaryTitle_tree, key);
+  if (tree) {
+    return tree->data;
+  }
+  return NULL;
+}
+
+void build_tindex( struct title_basics_array* titles ) {
+  int i;
+  struct node *tree = NULL;
+  tree = add_node(tree, titles->titles[0].tconst, &(titles->titles[0]));
+  for (i = 1; i < titles->num; i++) {
+    add_node(tree, titles->titles[i].tconst, &(titles->titles[i]));
+  }
+  titles->tconst_tree = tree;
+}
+
+struct title_basics * find_tconst (struct title_basics_array* titles, char *key) {
+  struct node* tree = find_node(titles->tconst_tree, key);
   if (tree) {
     return tree->data;
   }

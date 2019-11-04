@@ -40,7 +40,7 @@ struct name_basics_array* get_name(char * path) {
       get_column(line, ncon, 0);
       get_column(line, name, 1);
       names->names[i].nconst = malloc(strlen(ncon) + 1);
-      strcpy(names->names[i].nconst, ncon);
+      strcpy(names->names[i].nconst, reverse(ncon));
       names->names[i].primaryName = malloc(strlen(name) + 1);
       strcpy(names->names[i].primaryName, name);
       i++;
@@ -64,6 +64,24 @@ void build_pnindex( struct name_basics_array* names ) {
 
 struct name_basics * find_primary_name (struct name_basics_array* names, char *key) {
   struct node* tree = find_node(names->primaryName_tree, key);
+  if (tree) {
+    return tree->data;
+  }
+  return NULL;
+}
+
+void build_nindex( struct name_basics_array* names ) {
+  int i;
+  struct node *tree = NULL;
+  tree = add_node(tree, names->names[0].nconst, &(names->names[0]));
+  for (i = 1; i < names->num; i++) {
+    add_node(tree, names->names[i].nconst, &(names->names[i]));
+  }
+  names->nconst_tree = tree;
+}
+
+struct name_basics * find_nconst (struct name_basics_array* names, char *key) {
+  struct node* tree = find_node(names->nconst_tree, key);
   if (tree) {
     return tree->data;
   }

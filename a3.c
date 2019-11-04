@@ -9,22 +9,52 @@
 
 
 int main(int argc, char * argv[]) {
-  struct name_basics_array *names_basic;
+  struct title_basics_array *title_basics;
+  struct title_basics *title;
+  struct name_basics_array *name_basics;
   struct name_basics *name;
+  struct title_principals_array *title_principals;
+  struct title_principals *principals;
   if (argc != 2) {
     fprintf( stderr, "Usage:  %s directory\n", argv[0] );
     exit(-1);
   }
-  names_basic = get_name( argv[1] );
+  title_basics = get_title( argv[1] );
 
-  build_pnindex( names_basic );
+  build_ptindex( title_basics );
 
-  name = find_primary_name( names_basic, "Anthony Daniels" );
+  build_tindex( title_basics );
 
-  printf( "%p\n", (void *)name );
+  printf("lines: %d\n", title_basics->num);
 
-  printf( "%s\n", name->nconst );
+  name_basics = get_name( argv[1] );
 
-  printf( "%s\n", name->primaryName );
+
+  build_pnindex( name_basics );
+
+  build_nindex( name_basics );
+
+  printf("lines: %d\n", name_basics->num);
+
+  title_principals = get_principals( argv[1] );
+
+
+  build_pntindex( title_principals );
+
+  build_pncindex( title_principals );
+
+  printf("lines: %d\n", title_principals->num);
+
+
+  printf( "Ready\n" );
+
+  name = find_primary_name( name_basics, "Bruce Lee" );
+
+  principals = find_principals_nconst( title_principals, name->nconst );
+
+  title = find_tconst( title_basics, principals->tconst );
+
+  printf( "%s\n", title->primaryTitle );
+
   return 0;
 }

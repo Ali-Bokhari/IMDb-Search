@@ -4,8 +4,9 @@
 
 #include "principals.h"
 #include "common.h"
+#include "binary.h"
 
-struct title_principals_array* get_principal(char * path) {
+struct title_principals_array* get_principals(char * path) {
   FILE *fp;
   char line[2048];
   char colm[256];
@@ -41,9 +42,9 @@ struct title_principals_array* get_principal(char * path) {
       get_column(line, ncon, 2);
       get_column(line, chars, 5);
       principals->principals[i].nconst = malloc(strlen(ncon) + 1);
-      strcpy(principals->principals[i].nconst, ncon);
+      strcpy(principals->principals[i].nconst, reverse(ncon));
       principals->principals[i].tconst = malloc(strlen(tcon) + 1);
-      strcpy(principals->principals[i].tconst, tcon);
+      strcpy(principals->principals[i].tconst, reverse(tcon));
       principals->principals[i].characters = malloc(strlen(chars) + 1);
       strcpy(principals->principals[i].characters, chars);
       i++;
@@ -54,4 +55,40 @@ struct title_principals_array* get_principal(char * path) {
   principals->nconst_tree = 0;
 
   return principals;
+}
+
+void build_pncindex( struct title_principals_array* principals ) {
+  int i;
+  struct node *tree = NULL;
+  tree = add_node(tree, principals->principals[0].nconst, &(principals->principals[0]));
+  for (i = 1; i < principals->num; i++) {
+    add_node(tree, principals->principals[i].nconst, &(principals->principals[i]));
+  }
+  principals->nconst_tree = tree;
+}
+
+struct title_principals * find_principals_nconst (struct title_principals_array* principals, char *key) {
+  struct node* tree = find_node(principals->nconst_tree, key);
+  if (tree) {
+    return tree->data;
+  }
+  return NULL;
+}
+
+void build_pntindex( struct title_principals_array* principals ) {
+  int i;
+  struct node *tree = NULL;
+  tree = add_node(tree, principals->principals[0].tconst, &(principals->principals[0]));
+  for (i = 1; i < principals->num; i++) {
+    add_node(tree, principals->principals[i].tconst, &(principals->principals[i]));
+  }
+  principals->tconst_tree = tree;
+}
+
+struct title_principals * find_principals_tconst (struct title_principals_array* principals, char *key) {
+  struct node* tree = find_node(principals->tconst_tree, key);
+  if (tree) {
+    return tree->data;
+  }
+  return NULL;
 }
