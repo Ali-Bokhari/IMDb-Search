@@ -29,16 +29,12 @@ int main(int argc, char * argv[]) {
 
   build_tindex( title_basics );
 
-  printf("lines: %d\n", title_basics->num);
-
   name_basics = get_name( argv[1] );
 
 
   build_pnindex( name_basics );
 
   build_nindex( name_basics );
-
-  printf("lines: %d\n", name_basics->num);
 
   title_principals = get_principals( argv[1] );
 
@@ -47,12 +43,9 @@ int main(int argc, char * argv[]) {
 
   build_pncindex( title_principals );
 
-  printf("lines: %d\n", title_principals->num);
-
   while (1) {
     printf("> ");
     scanf("%5s %100s", first, second);
-    printf("%s: %s\n", first, second);
 
     if (strcmp(first, "name") == 0) {
       name = find_primary_name( name_basics, second );
