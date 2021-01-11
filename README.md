@@ -1,4 +1,4 @@
-Search IMBD by Actor/Actress or by Movie
+Search IMDb by Actor/Actress or by Movie
 
 Datasets available at: https://datasets.imdbws.com/
 Download name.basics.tsv, title.basics.tsv, title.principals.tsv and put them in a folder
